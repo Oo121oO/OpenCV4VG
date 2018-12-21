@@ -10,10 +10,18 @@ extern "C" {
 /*
  * Class:     com_yy_opencv_OpenCVProcessor
  * Method:    detectHoughCircles
- * Signature: (Ljava/lang/Object;IIII)[Ljava/lang/Object;
+ * Signature: (Ljava/lang/Object;FIIII)[Ljava/lang/Object;
  */
 JNIEXPORT jobject JNICALL Java_com_yy_opencv_OpenCVProcessor_detectHoughCircles
-  (JNIEnv *, jobject, jobject, jint, jint, jint, jint);
+  (JNIEnv *, jobject, jobject, jfloat, jint, jint, jint, jint);
+
+/*
+ * Class:     com_yy_opencv_OpenCVProcessor
+ * Method:    matchTemplate
+ * Signature: (Ljava/lang/Object;Ljava/lang/Object;FIIII)[Ljava/lang/Object;
+*/
+JNIEXPORT jobject JNICALL Java_com_yy_opencv_OpenCVProcessor_matchTemplate
+  (JNIEnv *, jobject, jobject, jobject, jfloat, jint, jint, jint, jint);
 
 #ifdef __cplusplus
 }
