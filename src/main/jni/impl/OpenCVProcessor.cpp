@@ -76,13 +76,6 @@ JNIEXPORT jobject JNICALL Java_com_yy_opencv_OpenCVProcessor_detectHoughCircles
 JNIEXPORT jobject JNICALL Java_com_yy_opencv_OpenCVProcessor_matchTemplate
         (JNIEnv *env, jobject, jobject bitmap, jobject temp,
         jfloat factor, jint x, jint y, jint w, jint h) {
-    //获得Point类引用
-    jclass r_cls = env->FindClass("android/graphics/Rect");
-    if (r_cls == NULL) {
-        fprintf(stderr, "class android/graphics/Rect not found.");
-        return NULL;
-    }
-    jmethodID r_init = env->GetMethodID(r_cls, "<init>", "(IIII)V");
     //获取image
     AndroidBitmapInfo info;
     void *pixels;
@@ -126,11 +119,28 @@ JNIEXPORT jobject JNICALL Java_com_yy_opencv_OpenCVProcessor_matchTemplate
     double minVal, maxVal;
 	Point minLoc, maxLoc;
 	minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, cv::Mat());
+    AndroidBitmap_unlockPixels(env, temp);
+    AndroidBitmap_unlockPixels(env, bitmap);
     //返回
+    //获得Rect类引用
+    jclass r_cls = env->FindClass("android/graphics/Rect");
+    if (r_cls == NULL) {
+        fprintf(stderr, "class android/graphics/Rect not found.");
+        return NULL;
+    }
+    jmethodID r_init = env->GetMethodID(r_cls, "<init>", "(IIII)V");
     int left = minLoc.x + x;
     int top = minLoc.y + y;
     int right = left + _temp.cols;
     int bottom = top + _temp.rows;
     jobject r_obj = env->NewObject(r_cls, r_init, left, top, right, bottom);
-    return r_obj;
+    //获得RectWithConfidence类引用
+    jclass rc_cls = env->FindClass("com/yy/opencv/RectWithConfidence");
+    if (rc_cls == NULL) {
+        fprintf(stderr, "class com/yy/opencv/RectWithConfidence not found.");
+        return NULL;
+    }
+    jmethodID rc_init = env->GetMethodID(rc_cls, "<init>", "(Landroid/graphics/Rect;F)V");
+    jobject rc_obj = env->NewObject(rc_cls, rc_init, r_obj, minVal);
+    return rc_obj;
 }
