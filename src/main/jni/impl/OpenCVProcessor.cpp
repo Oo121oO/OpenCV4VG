@@ -75,7 +75,7 @@ JNIEXPORT jobject JNICALL Java_com_yy_opencv_OpenCVProcessor_detectHoughCircles
 
 JNIEXPORT jobject JNICALL Java_com_yy_opencv_OpenCVProcessor_matchTemplate
         (JNIEnv *env, jobject, jobject bitmap, jobject temp,
-        jfloat factor, jint x, jint y, jint w, jint h) {
+        jfloat factor, jint x, jint y, jint w, jint h, jint scale) {
     //获取image
     AndroidBitmapInfo info;
     void *pixels;
@@ -96,6 +96,7 @@ JNIEXPORT jobject JNICALL Java_com_yy_opencv_OpenCVProcessor_matchTemplate
     height = info.height;
     Mat _image(height, width, CV_8UC4, pixels);
     Mat _roi(_image, Rect(x, y, w, h));
+    resize(_roi, _roi, Size(), 1.0 / scale, 1.0 / scale);
     //获取template
     if (AndroidBitmap_getInfo(env, temp, &info) < 0) {
         fprintf(stderr, "getInfo error.");
@@ -112,7 +113,7 @@ JNIEXPORT jobject JNICALL Java_com_yy_opencv_OpenCVProcessor_matchTemplate
     width = info.width;
     height = info.height;
     Mat _temp(height, width, CV_8UC4, pixels);
-    resize(_temp, _temp, Size(), factor, factor);
+    resize(_temp, _temp, Size(), factor / scale, factor / scale);
     //开始matchTemplate
     Mat result;
     matchTemplate(_roi, _temp, result, CV_TM_SQDIFF_NORMED);
@@ -129,8 +130,8 @@ JNIEXPORT jobject JNICALL Java_com_yy_opencv_OpenCVProcessor_matchTemplate
         return NULL;
     }
     jmethodID r_init = env->GetMethodID(r_cls, "<init>", "(IIII)V");
-    int left = minLoc.x + x;
-    int top = minLoc.y + y;
+    int left = scale * minLoc.x + x;
+    int top = scale * minLoc.y + y;
     int right = left + _temp.cols;
     int bottom = top + _temp.rows;
     jobject r_obj = env->NewObject(r_cls, r_init, left, top, right, bottom);
