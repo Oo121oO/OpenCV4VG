@@ -132,8 +132,8 @@ JNIEXPORT jobject JNICALL Java_com_lulu_lulubox_opencv_OpenCVProcessor_matchTemp
     jmethodID r_init = env->GetMethodID(r_cls, "<init>", "(IIII)V");
     int left = scale * minLoc.x + x;
     int top = scale * minLoc.y + y;
-    int right = left + _temp.cols;
-    int bottom = top + _temp.rows;
+    int right = left + scale * _temp.cols;
+    int bottom = top + scale * _temp.rows;
     jobject r_obj = env->NewObject(r_cls, r_init, left, top, right, bottom);
     //获得RectWithConfidence类引用
     jclass rc_cls = env->FindClass("com/lulu/lulubox/opencv/RectWithConfidence");
