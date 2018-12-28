@@ -113,6 +113,7 @@ JNIEXPORT jobject JNICALL Java_com_lulu_lulubox_opencv_OpenCVProcessor_matchTemp
     width = info.width;
     height = info.height;
     Mat _temp(height, width, CV_8UC4, pixels);
+    float s = factor / scale;
     resize(_temp, _temp, Size(), factor / scale, factor / scale);
     //开始matchTemplate
     Mat result;
