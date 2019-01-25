@@ -11,7 +11,7 @@
 using namespace cv;
 using namespace std;
 
-JNIEXPORT jobject JNICALL Java_com_lulu_lulubox_opencv_OpenCVProcessor_detectHoughCircles
+JNIEXPORT jobject JNICALL Java_com_yy_opencv_OpenCVProcessor_detectHoughCircles
         (JNIEnv *env, jobject, jobject bitmap,
         jfloat factor, jint x, jint y, jint w, jint h) {
     //获得ArrayList类引用
@@ -56,9 +56,9 @@ JNIEXPORT jobject JNICALL Java_com_lulu_lulubox_opencv_OpenCVProcessor_detectHou
         fprintf(stderr, "hough circles not found.");
         return list_obj;
     }
-    jclass hc_cls = env->FindClass("com/lulu/lulubox/opencv/HoughCircles");
+    jclass hc_cls = env->FindClass("com/yy/opencv/HoughCircles");
     if (hc_cls == NULL) {
-        fprintf(stderr, "class com/lulu/lulubox/opencv/HoughCircles not found.");
+        fprintf(stderr, "class com/yy/opencv/HoughCircles not found.");
         return list_obj;
     }
     jmethodID hc_init = env->GetMethodID(hc_cls, "<init>", "(FFF)V");
@@ -137,9 +137,9 @@ JNIEXPORT jobject JNICALL Java_com_lulu_lulubox_opencv_OpenCVProcessor_matchTemp
     int bottom = top + scale * _temp.rows;
     jobject r_obj = env->NewObject(r_cls, r_init, left, top, right, bottom);
     //获得RectWithConfidence类引用
-    jclass rc_cls = env->FindClass("com/lulu/lulubox/opencv/RectWithConfidence");
+    jclass rc_cls = env->FindClass("com/yy/opencv/RectWithConfidence");
     if (rc_cls == NULL) {
-        fprintf(stderr, "class com/lulu/lulubox/opencv/RectWithConfidence not found.");
+        fprintf(stderr, "class com/yy/opencv/RectWithConfidence not found.");
         return NULL;
     }
     jmethodID rc_init = env->GetMethodID(rc_cls, "<init>", "(Landroid/graphics/Rect;F)V");
