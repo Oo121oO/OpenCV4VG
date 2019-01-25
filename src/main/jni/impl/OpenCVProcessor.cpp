@@ -73,7 +73,7 @@ JNIEXPORT jobject JNICALL Java_com_yy_opencv_OpenCVProcessor_detectHoughCircles
     return list_obj;
 }
 
-JNIEXPORT jobject JNICALL Java_com_lulu_lulubox_opencv_OpenCVProcessor_matchTemplate
+JNIEXPORT jobject JNICALL Java_com_yy_opencv_OpenCVProcessor_matchTemplate
         (JNIEnv *env, jobject, jobject bitmap, jobject temp,
         jfloat factor, jint x, jint y, jint w, jint h, jint scale) {
     //获取image
